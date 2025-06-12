@@ -4,17 +4,58 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "334cbc00cf13580453752048b798ec88",
-    "packages": [],
+    "content-hash": "8931e2372c16eebd9e1de2ec8d7da53e",
+    "packages": [
+        {
+            "name": "wellnessliving/wl-sdk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wellnessliving/wl-sdk.git",
+                "reference": "a190e5db34aed1a02d8351aa21daeae7c89c3f33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wellnessliving/wl-sdk/zipball/a190e5db34aed1a02d8351aa21daeae7c89c3f33",
+                "reference": "a190e5db34aed1a02d8351aa21daeae7c89c3f33",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "WellnessLiving": "\\"
+            },
+            "license": [
+                "proprietary"
+            ],
+            "description": "Wellenessliving API SDK",
+            "support": {
+                "source": "https://github.com/wellnessliving/wl-sdk/tree/master",
+                "issues": "https://github.com/wellnessliving/wl-sdk/issues"
+            },
+            "time": "2025-01-27T08:23:28+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "wellnessliving/wl-sdk": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4"
+        "ext-bcmath": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "php": ">=5.5"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }

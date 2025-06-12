@@ -1,6 +1,6 @@
 {
   "name": "chrisdownham/wl-sdk-example",
-  "description": "Example project for WellnessLiving PHP API SDK",
+  "description": "Example project wiring up the WellnessLiving PHP SDK",
   "license": "proprietary",
 
   "repositories": [
