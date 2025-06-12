@@ -1,75 +1,50 @@
 <?php
+require_once __DIR__ . '/WlSdkAutoloader.php';
+WlSdkAutoloader::register();
 
-namespace WlSdkExample;
+use WellnessLiving\Config\WlRegionSid;
+use WellnessLiving\Config\WlConfigDeveloper;
+use WellnessLiving\Wl\Passport\Login\Enter\NotepadModel;
+use WellnessLiving\Wl\Passport\Login\Enter\EnterModel;
+use WellnessLiving\Wl\Report\Data\DataModel;
+use WellnessLiving\Wl\Report\Data\WlReportGroupSid;
+use WellnessLiving\Wl\Report\Data\WlReportSid;
 
-use WellnessLiving\Core\Passport\Login\Enter\EnterModel;
-use WellnessLiving\Core\Passport\Login\Enter\NotepadModel;
-use WellnessLiving\Wl\Report\DataModel;
-use WellnessLiving\Wl\Report\WlReportGroupSid;
-use WellnessLiving\Wl\Report\WlReportSid;
-use WellnessLiving\WlAssertException;
-use WellnessLiving\WlRegionSid;
-use WellnessLiving\WlUserException;
+class ExampleConfig extends WlConfigDeveloper {}
 
-require_once __DIR__.'/WellnessLiving/wl-autoloader.php';
-require_once __DIR__.'/example-config.php';
+try {
+  $o_config = ExampleConfig::create(WlRegionSid::US_EAST_1);
 
-try
-{
-  $o_config=ExampleConfig::create(WlRegionSid::US_EAST_1);
+  // Step 1: Get notepad session
+  $o_notepad = new NotepadModel($o_config);
+  $o_notepad->get();
 
-  // Retrieve notepad (it is a separate step of user sign in process)
-  $o_notepad=new NotepadModel($o_config);
-  $o_request=$o_notepad->get();
-
-  // Approach to get debugging information.
-  echo $o_request->httpProtocol() . PHP_EOL . PHP_EOL;
-
-  // Sign in a user.
-  $o_enter=new EnterModel($o_config);
-  $o_enter->cookieSet($o_notepad->cookieGet()); // Keep cookies to keep session.
-  $o_enter->s_login='/** Put your login here */';
-  $o_enter->s_notepad=$o_notepad->s_notepad;
-  $o_enter->s_password=$o_notepad->hash('/** Put your password here */');
+  // Step 2: Log in using your WL credentials
+  $o_enter = new EnterModel($o_config);
+  $o_enter->cookieSet($o_notepad->cookieGet());
+  $o_enter->s_login = 'ctdownham@googlemail.com';
+  $o_enter->s_notepad = $o_notepad->s_notepad;
+  $o_enter->s_password = $o_notepad->hash('R1SEYoga7442');
   $o_enter->post();
 
-  // Another approach to get debugging information.
-  echo $o_enter->lastRequest()->httpProtocol(). PHP_EOL;
-
-  $o_report=new DataModel($o_config);
-  $o_report->cookieSet($o_notepad->cookieGet()); // Keep cookies to keep session.
-  $o_report->id_report_group=WlReportGroupSid::DAY;
-  $o_report->id_report=WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
-  $o_report->k_business='/** Put your business ID here */'; // Put your business key here
+  // Step 3: Retrieve All Sales Report
+  $o_report = new DataModel($o_config);
+  $o_report->cookieSet($o_notepad->cookieGet());
+  $o_report->id_report_group = WlReportGroupSid::DAY;
+  $o_report->id_report = WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
+  $o_report->k_business = '48278'; // Your business ID
   $o_report->filterSet([
-    'dt_date' => '2018-08-21'
+    'dt_date' => date('Y-m-d'), // Today’s date
   ]);
   $o_report->get();
 
-  $i=0;
-  foreach($o_report->a_data['a_row'] as $a_row)
-  {
+  // Output report
+  $i = 0;
+  foreach ($o_report->a_data['a_row'] as $a_row) {
     $i++;
-    echo $i.'. '.$a_row['dt_date'].' '.$a_row['m_paid']['m_amount'].' '.$a_row['o_user']['text_name'].' '.$a_row['s_item']. PHP_EOL;
+    echo $i . '. ' . $a_row['dt_date'] . ' ' . $a_row['f_total']['m_amount'] . ' ' . $a_row['o_user']['text_name'] . ' ' . $a_row['s_item'] . "<br>";
   }
-}
-catch(WlAssertException $e)
-{
-  echo $e;
-  echo PHP_EOL;
-  return;
-}
-catch(WlUserException $e)
-{
-  echo $e->getMessage()."\n";
 
-  // Approach to get debugging information in a case of exception.
-  if ($e->request()) {
-    echo PHP_EOL . PHP_EOL . $e->request()->httpProtocol() . PHP_EOL;
-  }
-  echo PHP_EOL;
-  return;
+} catch (Exception $e) {
+  echo '❌ Error: ' . $e->getMessage() . "<br>";
 }
-
-echo PHP_EOL;
-?>
