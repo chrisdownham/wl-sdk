@@ -14,11 +14,11 @@ class ExampleConfig extends WlConfigDeveloper {}
 try {
   $o_config = ExampleConfig::create(WlRegionSid::US_EAST_1);
 
-  // Step 1: Get notepad session
+  // Step 1: Start session via Notepad
   $o_notepad = new NotepadModel($o_config);
   $o_notepad->get();
 
-  // Step 2: Log in using your WL credentials
+  // Step 2: Sign in user
   $o_enter = new EnterModel($o_config);
   $o_enter->cookieSet($o_notepad->cookieGet());
   $o_enter->s_login = 'ctdownham@googlemail.com';
@@ -26,22 +26,22 @@ try {
   $o_enter->s_password = $o_notepad->hash('R1SEYoga7442');
   $o_enter->post();
 
-  // Step 3: Retrieve All Sales Report
+  // Step 3: Get All Sales Report
   $o_report = new DataModel($o_config);
   $o_report->cookieSet($o_notepad->cookieGet());
   $o_report->id_report_group = WlReportGroupSid::DAY;
   $o_report->id_report = WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
-  $o_report->k_business = '48278'; // Your business ID
+  $o_report->k_business = '48278'; // Your staging business ID
   $o_report->filterSet([
-    'dt_date' => date('Y-m-d'), // Today’s date
+    'dt_date' => date('Y-m-d'), // Today's date
   ]);
   $o_report->get();
 
-  // Output report
+  // Step 4: Output Results
   $i = 0;
   foreach ($o_report->a_data['a_row'] as $a_row) {
     $i++;
-    echo $i . '. ' . $a_row['dt_date'] . ' ' . $a_row['f_total']['m_amount'] . ' ' . $a_row['o_user']['text_name'] . ' ' . $a_row['s_item'] . "<br>";
+    echo $i . '. ' . $a_row['dt_date'] . ' - $' . $a_row['f_total']['m_amount'] . ' - ' . $a_row['o_user']['text_name'] . ' - ' . $a_row['s_item'] . "<br>";
   }
 
 } catch (Exception $e) {
