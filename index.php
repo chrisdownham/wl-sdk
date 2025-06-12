@@ -1,23 +1,19 @@
 <?php
 declare(strict_types=1);
 
-// 1) Composer’s autoloader
+// 1) Load Composer’s autoloader
 require __DIR__ . '/vendor/autoload.php';
 
-// 2) Your config
+// 2) Load your config
 require __DIR__ . '/config.php';
 
 use WlSdkExample\ExampleConfig;
 
-// 3) DEBUG: show config constants
+// 3) VERIFY that config.php is being loaded:
 echo '<pre>';
 echo 'Authorize Code: ' . ExampleConfig::AUTHORIZE_CODE . PHP_EOL;
 echo 'Authorize ID:   ' . ExampleConfig::AUTHORIZE_ID   . PHP_EOL;
 echo '</pre>';
 
-// 🔥 STOP.  If you see your real codes above, config is loaded correctly.
+// Stop here — once you see your real codes on-screen, config is loading correctly.
 exit;
-
-// ————————————————————————————————————————————————————————————————
-// Once you’ve verified, replace everything *after* the `require __DIR__ . '/config.php';`
-// with your original SDK logic (the NotepadModel / EnterModel / DataModel calls).
