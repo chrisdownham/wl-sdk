@@ -2,7 +2,7 @@
 require_once __DIR__ . '/WellnessLiving/wl-autoloader.php';
 
 use WellnessLiving\Wl\WlRegionSid;
-use WellnessLiving\Wl\Config\WlConfigDeveloper;
+use WellnessLiving\Config\WlConfigDeveloper;
 use WellnessLiving\Wl\Passport\Login\Enter\NotepadModel;
 use WellnessLiving\Wl\Passport\Login\Enter\EnterModel;
 use WellnessLiving\Wl\Report\Data\DataModel;
@@ -21,9 +21,9 @@ try {
   // Step 2: Sign in user
   $o_enter = new EnterModel($o_config);
   $o_enter->cookieSet($o_notepad->cookieGet());
-  $o_enter->s_login = 'ctdownham@googlemail.com';
+  $o_enter->s_login = 'ctdownham@googlemail.com';  // replace if needed
   $o_enter->s_notepad = $o_notepad->s_notepad;
-  $o_enter->s_password = $o_notepad->hash('R1SEYoga7442');
+  $o_enter->s_password = $o_notepad->hash('R1SEYoga7442');  // replace if needed
   $o_enter->post();
 
   // Step 3: Get All Sales Report
@@ -31,9 +31,9 @@ try {
   $o_report->cookieSet($o_notepad->cookieGet());
   $o_report->id_report_group = WlReportGroupSid::DAY;
   $o_report->id_report = WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
-  $o_report->k_business = '48278'; // Your staging business ID
+  $o_report->k_business = '48278'; // staging BID
   $o_report->filterSet([
-    'dt_date' => date('Y-m-d'), // Today's date
+    'dt_date' => date('Y-m-d'),
   ]);
   $o_report->get();
 
