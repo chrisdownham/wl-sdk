@@ -1,68 +1,23 @@
 <?php
-// ─── DEBUG: List vendor directory and check files ───────────────────────────────
-echo "<pre>\n";
-echo "ROOT:\n";
-passthru('ls -R .');
-echo "\n\nVENDOR:\n";
-passthru('ls -R vendor');
-echo "\n\nChecks:\n";
-echo "autoload.php exists? " . (file_exists(__DIR__.'/vendor/autoload.php') ? "✅\n" : "❌\n");
-echo "SDK dir exists?     " . (is_dir(__DIR__.'/vendor/wellnessliving/wl-sdk') ? "✅\n" : "❌\n");
-echo "</pre>\n";
-die();
-// ────────────────────────────────────────────────────────────────────────────────
+declare(strict_types=1);
 
-// rest of your original index.php follows...
-// ─── Composer Autoloader ───────────────────────────────────────────────────────
+// 1) Composer’s autoloader
 require __DIR__ . '/vendor/autoload.php';
 
-use WellnessLiving\Wl\WlRegionSid;
-use WellnessLiving\Config\WlConfigDeveloper;
-use WellnessLiving\Wl\Passport\Login\Enter\NotepadModel;
-use WellnessLiving\Wl\Passport\Login\Enter\EnterModel;
-use WellnessLiving\Wl\Report\DataModel;
-use WellnessLiving\Wl\Report\WlReportGroupSid;
-use WellnessLiving\Wl\Report\WlReportSid;
+// 2) Your config
+require __DIR__ . '/config.php';
 
-// ─── Config Subclass ──────────────────────────────────────────────────────────
-class ExampleConfig extends WlConfigDeveloper
-{
-  protected function authorizeId(): string   { return getenv('WL_AUTHORIZE_ID'); }
-  protected function authorizeCode(): string { return getenv('WL_AUTHORIZE_CODE'); }
-  protected function username(): string      { return getenv('WL_USERNAME'); }
-  protected function password(): string      { return getenv('WL_PASSWORD'); }
-}
+use WlSdkExample\ExampleConfig;
 
-try {
-  // 1) Initialize
-  $config  = ExampleConfig::create(WlRegionSid::US_EAST_1);
-  $notepad = new NotepadModel($config);
-  $notepad->get();
+// 3) DEBUG: show config constants
+echo '<pre>';
+echo 'Authorize Code: ' . ExampleConfig::AUTHORIZE_CODE . PHP_EOL;
+echo 'Authorize ID:   ' . ExampleConfig::AUTHORIZE_ID   . PHP_EOL;
+echo '</pre>';
 
-  // 2) Authenticate
-  $enter = new EnterModel($config);
-  $enter->cookieSet($notepad->cookieGet());
-  $enter->post();
+// 🔥 STOP.  If you see your real codes above, config is loaded correctly.
+exit;
 
-  // 3) Fetch Sales Report
-  $report = new DataModel($config);
-  $report->cookieSet($notepad->cookieGet());
-  $report->id_report_group = WlReportGroupSid::DAY;
-  $report->id_report       = WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
-  $report->k_business      = getenv('WL_BID');
-  $report->filterSet([ 'dt_date' => date('Y-m-d') ]);
-  $report->get();
-
-  // 4) Output
-  foreach ($report->a_data['a_row'] as $i => $row) {
-    echo ($i + 1) . '. '
-       . $row['dt_date']
-       . ' – $' . $row['f_total']['m_amount']
-       . ' – ' . $row['o_user']['text_name']
-       . ' – ' . $row['s_item']
-       . "<br>\n";
-  }
-
-} catch (Exception $e) {
-  echo '❌ Error: ' . $e->getMessage() . "<br>\n";
-}
+// ————————————————————————————————————————————————————————————————
+// Once you’ve verified, replace everything *after* the `require __DIR__ . '/config.php';`
+// with your original SDK logic (the NotepadModel / EnterModel / DataModel calls).
