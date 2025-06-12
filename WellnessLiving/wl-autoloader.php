@@ -1,10 +1,25 @@
 <?php
 
-spl_autoload_register(function ($s_class)
-{
-  if(substr($s_class,0,15)==='WellnessLiving\\')
-  {
-    require __DIR__.'/'.str_replace('\\','/',substr($s_class,15)).'.php';
-  }
-}, true);
+require_once __DIR__ . '/Config/WlRegionSid.php';
+require_once __DIR__ . '/Config/WlReportSid.php';
+require_once __DIR__ . '/Config/WlReportGroupSid.php';
 
+/**
+ * Autoloader class for the WellnessLiving SDK.
+ */
+class WlSdkAutoloader
+{
+  /**
+   * Registers the autoloader function with PHP.
+   */
+  public static function register()
+  {
+    spl_autoload_register(function ($s_class) {
+      $s_class_path = __DIR__ . '/' . str_replace('\\', '/', $s_class) . '.php';
+
+      if (file_exists($s_class_path)) {
+        require_once $s_class_path;
+      }
+    });
+  }
+}
