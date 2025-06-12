@@ -1,18 +1,23 @@
 {
-  "name": "chrisdownham/wl-sdk-example",
-  "description": "Example project wiring up the WellnessLiving PHP SDK",
+  "name": "chrisdownham/wl-sdk",
+  "description": "Integration project using the official WellnessLiving PHP SDK",
+  "type": "project",
   "license": "proprietary",
-
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/wellnessliving/wl-sdk.git"
+    }
+  ],
   "require": {
-    "ext-bcmath": "*",
-    "ext-curl": "*",
-    "ext-json": "*",
-    "php": ">=5.5"
+    "php": ">=8.0",
+    "wellnessliving/wl-sdk": "dev-master"
   },
-
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "WellnessLiving\\": "WellnessLiving/"
+      "App\\": "src/"
     }
   }
 }
