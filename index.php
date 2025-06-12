@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/WellnessLiving/wl-autoloader.php';
+// ─── Composer Autoloader ───────────────────────────────────────────────────────
+require __DIR__ . '/vendor/autoload.php';
 
 use WellnessLiving\Wl\WlRegionSid;
 use WellnessLiving\Config\WlConfigDeveloper;
@@ -9,41 +10,51 @@ use WellnessLiving\Wl\Report\DataModel;
 use WellnessLiving\Wl\Report\WlReportGroupSid;
 use WellnessLiving\Wl\Report\WlReportSid;
 
-class ExampleConfig extends WlConfigDeveloper {}
+// ─── Your Config Subclass ─────────────────────────────────────────────────────
+class ExampleConfig extends WlConfigDeveloper
+{
+  protected function authorizeId(): string   { return getenv('WL_AUTHORIZE_ID'); }
+  protected function authorizeCode(): string { return getenv('WL_AUTHORIZE_CODE'); }
+  protected function username(): string      { return getenv('WL_USERNAME'); }
+  protected function password(): string      { return getenv('WL_PASSWORD'); }
+}
 
 try {
-  $o_config = ExampleConfig::create(WlRegionSid::US_EAST_1);
+  // ─── 1) Initialize Config & Notepad ─────────────────────────────────────────
+  $config  = ExampleConfig::create(WlRegionSid::US_EAST_1);
+  $notepad = new NotepadModel($config);
+  $notepad->get();
 
-  // Step 1: Start session via Notepad
-  $o_notepad = new NotepadModel($o_config);
-  $o_notepad->get();
+  // ─── 2) Authenticate User ────────────────────────────────────────────────────
+  $enter = new EnterModel($config);
+  $enter->cookieSet($notepad->cookieGet());
+  // (If you prefer hard‐coding, you can override: 
+  //  $enter->s_login = 'you@example.com';
+  //  $enter->s_password = $notepad->hash('YourPassword');
+  // )
+  $enter->post();
 
-  // Step 2: Sign in user
-  $o_enter = new EnterModel($o_config);
-  $o_enter->cookieSet($o_notepad->cookieGet());
-  $o_enter->s_login = 'ctdownham@googlemail.com';  // replace if needed
-  $o_enter->s_notepad = $o_notepad->s_notepad;
-  $o_enter->s_password = $o_notepad->hash('R1SEYoga7442');  // replace if needed
-  $o_enter->post();
-
-  // Step 3: Get All Sales Report
-  $o_report = new DataModel($o_config);
-  $o_report->cookieSet($o_notepad->cookieGet());
-  $o_report->id_report_group = WlReportGroupSid::DAY;
-  $o_report->id_report = WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
-  $o_report->k_business = '48278'; // staging BID
-  $o_report->filterSet([
+  // ─── 3) Fetch “All Sales Report” ─────────────────────────────────────────────
+  $report = new DataModel($config);
+  $report->cookieSet($notepad->cookieGet());
+  $report->id_report_group = WlReportGroupSid::DAY;
+  $report->id_report       = WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
+  $report->k_business      = getenv('WL_BID');
+  $report->filterSet([
     'dt_date' => date('Y-m-d'),
   ]);
-  $o_report->get();
+  $report->get();
 
-  // Step 4: Output Results
-  $i = 0;
-  foreach ($o_report->a_data['a_row'] as $a_row) {
-    $i++;
-    echo $i . '. ' . $a_row['dt_date'] . ' - $' . $a_row['f_total']['m_amount'] . ' - ' . $a_row['o_user']['text_name'] . ' - ' . $a_row['s_item'] . "<br>";
+  // ─── 4) Output Results ──────────────────────────────────────────────────────
+  foreach ($report->a_data['a_row'] as $i => $row) {
+    echo ($i + 1) . '. '
+       . $row['dt_date'] 
+       . ' – $' . $row['f_total']['m_amount'] 
+       . ' – ' . $row['o_user']['text_name'] 
+       . ' – ' . $row['s_item']
+       . "<br>\n";
   }
 
 } catch (Exception $e) {
-  echo '❌ Error: ' . $e->getMessage() . "<br>";
+  echo '❌ Error: ' . $e->getMessage() . "<br>\n";
 }
