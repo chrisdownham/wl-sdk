@@ -2,12 +2,22 @@
   "name": "wellnessliving/wl-sdk",
   "description": "WellnessLiving PHP API SDK",
   "license": "proprietary",
+
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/wellnessliving/wl-sdk.git"
+    }
+  ],
+
   "require": {
+    "wellnessliving/wl-sdk": "dev-master",
     "ext-bcmath": "*",
     "ext-curl": "*",
     "ext-json": "*",
     "php": ">=5.5"
   },
+
   "autoload": {
     "psr-4": {
       "WellnessLiving\\\\": "src/WellnessLiving/"
