@@ -10,7 +10,7 @@ use WellnessLiving\Wl\Report\DataModel;
 use WellnessLiving\Wl\Report\WlReportGroupSid;
 use WellnessLiving\Wl\Report\WlReportSid;
 
-// ─── Your Config Subclass ─────────────────────────────────────────────────────
+// ─── Config Subclass ──────────────────────────────────────────────────────────
 class ExampleConfig extends WlConfigDeveloper
 {
   protected function authorizeId(): string   { return getenv('WL_AUTHORIZE_ID'); }
@@ -20,37 +20,31 @@ class ExampleConfig extends WlConfigDeveloper
 }
 
 try {
-  // ─── 1) Initialize Config & Notepad ─────────────────────────────────────────
+  // 1) Initialize
   $config  = ExampleConfig::create(WlRegionSid::US_EAST_1);
   $notepad = new NotepadModel($config);
   $notepad->get();
 
-  // ─── 2) Authenticate User ────────────────────────────────────────────────────
+  // 2) Authenticate
   $enter = new EnterModel($config);
   $enter->cookieSet($notepad->cookieGet());
-  // (If you prefer hard‐coding, you can override: 
-  //  $enter->s_login = 'you@example.com';
-  //  $enter->s_password = $notepad->hash('YourPassword');
-  // )
   $enter->post();
 
-  // ─── 3) Fetch “All Sales Report” ─────────────────────────────────────────────
+  // 3) Fetch Sales Report
   $report = new DataModel($config);
   $report->cookieSet($notepad->cookieGet());
   $report->id_report_group = WlReportGroupSid::DAY;
   $report->id_report       = WlReportSid::PURCHASE_ITEM_ACCRUAL_CASH;
   $report->k_business      = getenv('WL_BID');
-  $report->filterSet([
-    'dt_date' => date('Y-m-d'),
-  ]);
+  $report->filterSet([ 'dt_date' => date('Y-m-d') ]);
   $report->get();
 
-  // ─── 4) Output Results ──────────────────────────────────────────────────────
+  // 4) Output
   foreach ($report->a_data['a_row'] as $i => $row) {
     echo ($i + 1) . '. '
-       . $row['dt_date'] 
-       . ' – $' . $row['f_total']['m_amount'] 
-       . ' – ' . $row['o_user']['text_name'] 
+       . $row['dt_date']
+       . ' – $' . $row['f_total']['m_amount']
+       . ' – ' . $row['o_user']['text_name']
        . ' – ' . $row['s_item']
        . "<br>\n";
   }

@@ -1,6 +1,6 @@
 {
-  "name": "wellnessliving/wl-sdk",
-  "description": "WellnessLiving PHP API SDK",
+  "name": "chrisdownham/wl-sdk",
+  "description": "Example project for WellnessLiving PHP API SDK",
   "license": "proprietary",
 
   "repositories": [
@@ -16,11 +16,5 @@
     "ext-curl": "*",
     "ext-json": "*",
     "php": ">=5.5"
-  },
-
-  "autoload": {
-    "psr-4": {
-      "WellnessLiving\\\\": "src/WellnessLiving/"
-    }
   }
 }
