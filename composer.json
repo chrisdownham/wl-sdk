@@ -1,6 +1,6 @@
 {
   "name": "wellnessliving/wl-sdk",
-  "description": "Wellnessliving API SDK",
+  "description": "WellnessLiving PHP API SDK",
   "license": "proprietary",
   "require": {
     "ext-bcmath": "*",
@@ -8,12 +8,9 @@
     "ext-json": "*",
     "php": ">=5.5"
   },
--  "autoload": {
--    "WellnessLiving": "\\"
--  }
-+  "autoload": {
-+    "psr-4": {
-+      "WellnessLiving\\": "src/WellnessLiving/"
-+    }
-+  }
+  "autoload": {
+    "psr-4": {
+      "WellnessLiving\\\\": "src/WellnessLiving/"
+    }
+  }
 }
