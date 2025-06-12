@@ -1,9 +1,5 @@
 <?php
 
-require_once __DIR__ . '/Wl/WlRegionSid.php';
-require_once __DIR__ . '/Wl/WlReportSid.php';
-require_once __DIR__ . '/Wl/WlReportGroupSid.php';
-
 /**
  * Autoloader class for the WellnessLiving SDK.
  */
