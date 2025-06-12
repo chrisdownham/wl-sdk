@@ -1,4 +1,18 @@
 <?php
+// ─── DEBUG: List vendor directory and check files ───────────────────────────────
+echo "<pre>\n";
+echo "ROOT:\n";
+passthru('ls -R .');
+echo "\n\nVENDOR:\n";
+passthru('ls -R vendor');
+echo "\n\nChecks:\n";
+echo "autoload.php exists? " . (file_exists(__DIR__.'/vendor/autoload.php') ? "✅\n" : "❌\n");
+echo "SDK dir exists?     " . (is_dir(__DIR__.'/vendor/wellnessliving/wl-sdk') ? "✅\n" : "❌\n");
+echo "</pre>\n";
+die();
+// ────────────────────────────────────────────────────────────────────────────────
+
+// rest of your original index.php follows...
 // ─── Composer Autoloader ───────────────────────────────────────────────────────
 require __DIR__ . '/vendor/autoload.php';
 
