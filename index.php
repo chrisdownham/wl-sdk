@@ -2,7 +2,7 @@
 require_once __DIR__ . '/WellnessLiving/wl-autoloader.php';
 
 use WellnessLiving\Wl\WlRegionSid;
-use WellnessLiving\Wl\Config\WlConfigDeveloper;
+use WellnessLiving\Config\WlConfigDeveloper;
 use WellnessLiving\Wl\Passport\Login\Enter\NotepadModel;
 use WellnessLiving\Wl\Passport\Login\Enter\EnterModel;
 use WellnessLiving\Wl\Report\Data\DataModel;
