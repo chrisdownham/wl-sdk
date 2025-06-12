@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/WellnessLiving/wl-autoloader.php';
-WlSdkAutoloader::register();
 
 use WellnessLiving\Config\WlRegionSid;
 use WellnessLiving\Config\WlConfigDeveloper;
