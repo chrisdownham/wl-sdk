@@ -3,18 +3,16 @@
   "description": "Example project wiring up the WellnessLiving PHP SDK",
   "license": "proprietary",
 
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/wellnessliving/wl-sdk.git"
-    }
-  ],
-
   "require": {
-    "wellnessliving/wl-sdk": "dev-master",
     "ext-bcmath": "*",
     "ext-curl": "*",
     "ext-json": "*",
     "php": ">=5.5"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "WellnessLiving\\": "WellnessLiving/"
+    }
   }
 }
