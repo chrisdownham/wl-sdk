@@ -1,14 +1,34 @@
 <?php
 
-namespace WellnessLiving;
+namespace WellnessLiving\Wl;
 
 /**
- * @deprecated As of 2023-09-11.
- *
- * Use class {@link \WellnessLiving\Wl\WlRegionSid} instead.
+ * Server region identifiers.
  */
-class WlRegionSid extends \WellnessLiving\Wl\WlRegionSid
+class WlRegionSid
 {
-}
+  /**
+   * Asia-Pacific server region.
+   */
+  const AUSTRALIA = 3;
 
-?>
+  /**
+   * Development server region.
+   */
+  const DEMO = 4;
+
+  /**
+   * Europe server region.
+   */
+  const EUROPE = 5;
+
+  /**
+   * North America server region.
+   */
+  const US_EAST_1 = 1;
+
+  /**
+   * Stable staging server region.
+   */
+  const STAGING = 2;
+}
