@@ -5,9 +5,9 @@ use WellnessLiving\Wl\WlRegionSid;
 use WellnessLiving\Config\WlConfigDeveloper;
 use WellnessLiving\Wl\Passport\Login\Enter\NotepadModel;
 use WellnessLiving\Wl\Passport\Login\Enter\EnterModel;
-use WellnessLiving\Wl\Report\Data\DataModel;
-use WellnessLiving\Wl\Report\Data\WlReportGroupSid;
-use WellnessLiving\Wl\Report\Data\WlReportSid;
+use WellnessLiving\Wl\Report\DataModel;
+use WellnessLiving\Wl\Report\WlReportGroupSid;
+use WellnessLiving\Wl\Report\WlReportSid;
 
 class ExampleConfig extends WlConfigDeveloper {}
 
